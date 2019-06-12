@@ -62,10 +62,10 @@ commit changes to the database
 '''
 conn.commit()
 
-c.execute('SELECT * from jenkins_jobs')
-jobs = c.fetchall()
-for id, job, status in jobs:
-	print(job)
+# c.execute('SELECT * from jenkins_jobs')
+# jobs = c.fetchall()
+# for id, job, status in jobs:
+# 	print(job)
 	
 '''
 End database connection
