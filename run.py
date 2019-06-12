@@ -12,7 +12,7 @@ url = 'http://localhost:8080'
 username = 'dammy'
 password = 'useadmin'
 
-J = jenkins.Jenkins(url,username=username, password=password)
+J = jenkins.Jenkins(url,username,password)
     
 
 '''
