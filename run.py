@@ -6,18 +6,14 @@ import requests
 import datetime
 
 '''
-The method init_server is for setting up and defining the required parameters
+define parameters required is for setting up and defining the required parameters
 '''
-def init_server(url, username, password):
-    J = jenkins.Jenkins(url,username=username, password=password)
-    return J
-
 url = 'http://localhost:8080'
-print('please enter your username')
-username = raw_input()
-print('please enter your password')
-password = raw_input()
-J = init_server(url, username, password)
+username = 'dammy'
+password = 'useadmin'
+
+J = jenkins.Jenkins(url,username=username, password=password)
+    
 
 '''
 This is for validation and authentication 
