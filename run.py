@@ -40,7 +40,7 @@ c = conn.cursor()
 '''
 A loop is created to fetch data from Jenkinsapi
 '''
-for job,instance in server.get_all_jobs():
+for job,instance in J.get_all_jobs():
 
     '''
     Using an If statement to determine the status of Jobs and for Output
