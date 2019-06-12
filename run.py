@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import jenkins
 from jenkinsapi.jenkins import Jenkins
 import sqlite3
