@@ -21,6 +21,9 @@ Jenkins jobs uses a python script + Jenkinsapi to fetch Jobs from Jenkins and up
 * JenkinsApi
 * Sqlite3
 
+## 	https://pythonhosted.org/jenkinsapi/_modules/jenkinsapi/api.html
+https://jenkinsapi.readthedocs.io/en/latest/
+
 ## Support and contact details
 If you have any questions, please feel free to contact me at abbyshabi@gmail.com. You are welcome to make contributions and corrections as needed.
 ### License
