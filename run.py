@@ -1,74 +1,50 @@
-#!/usr/bin/env python3
-import jenkins
 from jenkinsapi.jenkins import Jenkins
+import jenkins
 import sqlite3
 import requests
-import datetime
-
-'''
-define parameters required is for setting up and defining the required parameters
-'''
-url = 'http://localhost:8080'
-username = 'dammy'
-password = 'useadmin'
-
-J = jenkins.Jenkins(url,username,password)
-    
-
-'''
-This is for validation and authentication 
-'''
-authenticated = False
-if J.get_whoami() == username:
-    authenticated = True
-else:
-    print("incorrect credentials")
-    authenticated = False
+from datetime import datetime
 
 
-'''
-Initialization of the sqlite3 datatbase after successful authentication
-'''
+
 conn = sqlite3.connect('jenkins_jobs.db') 
-c = conn.cursor()
+cursor = conn.cursor()
+
+def init_server(url, username, password):
+    jenkins_server = Jenkins(url, username, password)
+    return jenkins_server
 
 
-'''
-A loop is created to fetch data from Jenkinsapi
-'''
-for job,instance in J.get_all_jobs():
+url = 'http://localhost:8080'
+username='dammy'
+password='ambition1'
 
-    '''
-    Using an If statement to determine the status of Jobs and for Output
-    '''
-    if instance.get_last_good_build() == None :
-         status = 'NOT_BUILT' #the get_last_good_build is a jenkins function 
-    elif instance.is_running():
-        status = 'SUCCESS'
-    else:
-        status = J.get_job(instance.name).get_last_build().get_status()
-	    
-    job_list = (instance.name, status,datetime.now())
-    c.execute("SELECT id FROM jenkins_jobs WHERE job_name = ?", (instance.name,))
-    data=c.fetchone()
+jenkins_server = init_server(url, username, password)
+
+
+for job, instance in jenkins_server.get_jobs():
+
+    
+    job_status = jenkins_server.get_job(instance.name).get_last_build().get_status()
+
+    job_list = (instance.name, job_status, datetime.now())
+
+    cursor.execute("SELECT id FROM jenkins_jobs WHERE job_name = ?", (instance.name,))
+    data=cursor.fetchone()
+
     if data is None:
-    	c.execute('INSERT INTO jenkins_jobs (job_name, status, date_checked) VALUES (?,?,?)', job_list)
+    	cursor.execute('INSERT INTO jenkins_jobs (job_name, job_status, job_date_checked) VALUES (?,?,?)', job_list)
     else:
-    	update_list = (status, instance.name,datetime.now())
-    	c.execute('UPDATE jenkins_jobs SET status=?, date_checked=? WHERE job_name=?', update_list)
+    	update_list = (job_status, instance.name,datetime.now())
+    	cursor.execute('UPDATE jenkins_jobs SET job_status=?, job_date_checked=? WHERE job_name=?', update_list)
 		
-'''
-commit changes to the database
-'''
+
+
 conn.commit()
 
-# c.execute('SELECT * from jenkins_jobs')
-# jobs = c.fetchall()
-# for id, job, status in jobs:
-# 	print(job)
-	
-'''
-End database connection
-''' 
+cursor.execute('SELECT * from jenkins_jobs')
+jobs = cursor.fetchall()
+for id, jobname, job_status, datechecked in jobs:
+	print(jobname+' || '+job_status+' || '+datechecked)
+
 conn.close()
 	
