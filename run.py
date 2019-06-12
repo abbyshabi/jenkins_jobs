@@ -44,8 +44,8 @@ for job,instance in server.get_all_jobs():
     '''
     Using an If statement to determine the status of Jobs and for Output
     '''
-    if instance.get_last_build_or_none() == None :
-         status = 'NOT_BUILT' #the get_last_build_or_none is a jenkins function 
+    if instance.get_last_good_build() == None :
+         status = 'NOT_BUILT' #the get_last_good_build is a jenkins function 
     elif instance.is_running():
         status = 'SUCCESS'
     else:
